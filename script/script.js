@@ -7,6 +7,20 @@ const nextButton = document.querySelector('#next');
 const prevButton = document.querySelector('#prev');
 const sendButton = document.querySelector('#send');
 
+const getData = () =>{
+  formAnswers.textContent = 'LOAD...';
+
+  setTimeout(() => {
+    fetch('./questions.json')
+      .then(res=> res.json())
+      .then(obj => playTest(obj.question))
+      .catch(err => {
+        formAnswers.textContent = 'Ошибка данных'
+        console.error(err)
+      })
+  }, 1000)
+}
+
 let questions = [];
 let page = 0;
 let finalAnswers = [];
@@ -34,14 +48,14 @@ getQuestions('./questions.json')
 
 function onOpenModalBtnClick() {
   modal.classList.add('d-block');
-  playTest();
+  getData();
 }
 
 function onCloseModalClick() {
   modal.classList.remove('d-block');
 }
 
-function playTest() {
+function playTest(questions) {
   formAnswers.innerHTML = '';
   sendButton.classList.add('d-none');
 
